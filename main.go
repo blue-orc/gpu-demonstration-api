@@ -20,7 +20,7 @@ func main() {
 
 	r := mux.NewRouter()
 	initializeControllers(r)
-	http.ListenAndServe(":80",
+	go http.ListenAndServe(":80",
 		handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
 			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}),
