@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gpu-demonstration-api/device-monitor"
+	"gpu-demonstration-api/python-job-runner"
 	"time"
 )
 
@@ -42,6 +43,16 @@ func (h *Hub) retrieveAndPushData() {
 		}
 		ds = append(ds, dsBytes...)
 		h.broadcast <- ds
+
+		js := []byte("JobStatus")
+		js = append(js, byte('\u0017'))
+		jsBytes, err := PythonJobRunner.GetStatusJSON()
+		if err != nil {
+			fmt.Println("Get Python Job Status: " + err.Error())
+			continue
+		}
+		js = append(js, jsBytes...)
+		h.broadcast <- js
 
 		time.Sleep(1 * time.Second)
 	}
