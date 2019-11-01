@@ -11,7 +11,7 @@ var addr = flag.String("addr", ":9002", "http service address")
 var addrTLS = flag.String("addrTLS", ":9003", "https service address")
 
 func main() {
-	DeviceMonitor.Init()
+	go DeviceMonitor.Init()
 	flag.Parse()
 	hub := newHub()
 	go hub.run()

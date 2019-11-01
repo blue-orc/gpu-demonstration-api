@@ -2,7 +2,7 @@ package DeviceMonitor
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"github.com/NVIDIA/gpu-monitoring-tools/bindings/go/nvml"
 	"log"
 	"os"
@@ -59,9 +59,9 @@ func Init() {
 					log.Panicf("Error getting device %d status: %v\n", i, err)
 				}
 				CurrentStatus = st
-				fmt.Printf("%5d %5d %5d %5d %5d %5d %5d %5d %5d\n",
-					i, *st.Power, *st.Temperature, *st.Utilization.GPU, *st.Utilization.Memory,
-					*st.Utilization.Encoder, *st.Utilization.Decoder, *st.Clocks.Memory, *st.Clocks.Cores)
+				//fmt.Printf("%5d %5d %5d %5d %5d %5d %5d %5d %5d\n",
+				//	i, *st.Power, *st.Temperature, *st.Utilization.GPU, *st.Utilization.Memory,
+				//	*st.Utilization.Encoder, *st.Utilization.Decoder, *st.Clocks.Memory, *st.Clocks.Cores)
 			}
 		case <-sigs:
 			return
