@@ -14,6 +14,6 @@ func InitPythonJobRunnerController(r *mux.Router) {
 }
 
 func jobRunnerHandler(w http.ResponseWriter, r *http.Request) {
-	PythonJobRunner.Run()
+	go PythonJobRunner.Run()
 	utilities.RespondOK(w)
 }
