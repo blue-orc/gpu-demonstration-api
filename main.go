@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"gpu-demonstration-api/controllers"
 	"gpu-demonstration-api/device-monitor"
@@ -17,13 +18,13 @@ func main() {
 	go DeviceMonitor.Init()
 	fmt.Println("Device monitor started")
 
-	/*r := mux.NewRouter()
+	r := mux.NewRouter()
 	initializeControllers(r)
-	log.Fatal(http.ListenAndServe(":80",
+	http.ListenAndServe(":80",
 		handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
 			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}),
-			handlers.AllowedOrigins([]string{"*"}))(r)))*/
+			handlers.AllowedOrigins([]string{"*"}))(r))
 
 	flag.Parse()
 	hub := newHub()
