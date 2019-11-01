@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"gpu-demonstration-api/DeviceMonitor"
+	"gpu-demonstration-api/device-monitor"
 	"time"
 )
 

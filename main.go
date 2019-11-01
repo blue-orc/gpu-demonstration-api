@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"gpu-demonstration-api/DeviceMonitor"
+	"gpu-demonstration-api/device-monitor"
 	"log"
 	"net/http"
 )
