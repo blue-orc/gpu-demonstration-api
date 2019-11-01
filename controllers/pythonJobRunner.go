@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	//"gpu-demonstration-api/python-job-runner"
+	"gpu-demonstration-api/python-job-runner"
 	"gpu-demonstration-api/utilities"
 	"net/http"
 
@@ -14,6 +14,6 @@ func InitPythonJobRunnerController(r *mux.Router) {
 }
 
 func jobRunnerHandler(w http.ResponseWriter, r *http.Request) {
-	//go PythonJobRunner.Run()
+	go PythonJobRunner.Run()
 	utilities.RespondOK(w)
 }
