@@ -35,7 +35,7 @@ func Run() {
 	}
 
 	Status.Status = "Running"
-	cmd := exec.Command("python3", "/home/ubuntu/go/src/gpu-demonstration-api/python-job-runner/scripts/pytorch-training.py")
+	cmd := exec.Command("python3", "/home/ubuntu/go/src/gpu-demonstration-api/python-job-runner/scripts/pytorch-training-gpu.py")
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		fmt.Println("Run Python Script Error: " + err.Error())
