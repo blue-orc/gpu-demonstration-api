@@ -42,7 +42,7 @@ func (h *Hub) retrieveAndPushData() {
 			continue
 		}
 		ds = append(ds, dsBytes...)
-		ds = append(ds, byte('\u0019'))
+		ds = append(ds, byte('\u00DE'))
 		h.broadcast <- ds
 
 		js := []byte("JobStatus")
@@ -53,7 +53,7 @@ func (h *Hub) retrieveAndPushData() {
 			continue
 		}
 		js = append(js, jsBytes...)
-		js = append(js, byte('\u0019'))
+		js = append(js, byte('\u00DE'))
 		h.broadcast <- js
 
 		time.Sleep(1 * time.Second)
