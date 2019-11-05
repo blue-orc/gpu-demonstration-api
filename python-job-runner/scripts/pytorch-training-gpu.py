@@ -1,10 +1,15 @@
 import sys
 import torch
+import time
 import numpy as np
 from torch.autograd import Variable
 from torch.nn import functional as F
 import cx_Oracle
 
+def writeOutput(key, value):
+    separator = ":"
+    print(key + separator + str(value))
+    sys.stdout.flush()
 
 def selectDischargeCyclesByBatteryName(db, batteryName):
     cur = db.cursor()
@@ -71,6 +76,10 @@ print("Connected to Oracle ADW")
 x_data, y_data = selectDischargeCycles(db)
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
+input_dim = 7
+output_dim = 1
+writeOutput("dataLength", len(x_data))
+writeOutput("dataWidth", input_dim)
 x_test = x_norm[65499]
 y_test = y_norm[65499]
 print('ok')
@@ -93,8 +102,7 @@ class LinearRegression(torch.nn.Module):
         out = torch.sigmoid(self.linear(x))
         return out
 
-input_dim = 7
-output_dim = 1
+
 
 x_tensor = torch.Tensor(x_norm).to(device)
 y_tensor = torch.Tensor(y_norm).to(device)
@@ -109,6 +117,9 @@ l_rate = 0.5
 optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
 
 epochs = 50000
+writeOutput("epochs", epochs)
+startTime = time.time()
+writeOutput("startTime", startTime)
 for epoch in range(epochs):
     pctComplete = epoch / epochs * 100
     #print ("{:.2f}".format(pctComplete)+"%", end="\r")
@@ -119,9 +130,12 @@ for epoch in range(epochs):
     loss.backward()
     optimizer.step()
     if (epoch % 1000 == 0):
+        writeOutput("percentComplete", "{:.2f}".format(pctComplete))
+        writeOutput("loss", "{:.6f}".format(loss.item()))
         print(loss.item())
         sys.stdout.flush()
-
+        
+writeOutput("executionTime", "{:.3f}".format(time.time() - startTime))
 predicted = model(x_test_tensor)
 print('predicted: ' + str(predicted.item()))
 print('actual: ' + str(y_test))
