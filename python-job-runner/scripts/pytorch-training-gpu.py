@@ -118,7 +118,7 @@ for epoch in range(epochs):
     loss = criterion(y_pred, y_ok)
     loss.backward()
     optimizer.step()
-    if (epoch > 0 and epoch / 1000 % 0):
+    if (epoch % 1000 == 0):
         print(loss.item())
         sys.stdout.flush()
 
