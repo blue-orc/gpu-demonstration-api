@@ -14,17 +14,29 @@ import (
 var addr = flag.String("addr", ":9002", "http service address")
 var addrTLS = flag.String("addrTLS", ":9003", "https service address")
 
+type HandleHTTP struct {
+	http *http.Server
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Path is %s", r.URL.Path[1:])
+
+}
+
 func main() {
 	go DeviceMonitor.Init()
 	fmt.Println("Device monitor started")
 
-	r := mux.NewRouter()
-	initializeControllers(r)
-	go http.ListenAndServe(":80",
-		handlers.CORS(
-			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
-			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}),
-			handlers.AllowedOrigins([]string{"*"}))(r))
+	mux1 := mux.NewRouter()
+	initializeControllers(mux1)
+	go func() {
+		http.ListenAndServe(":80",
+			handlers.CORS(
+				handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
+				handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}),
+				handlers.AllowedOrigins([]string{"*"}))(mux1))
+		fmt.Println("API started")
+	}()
 
 	flag.Parse()
 	hub := newHub()
@@ -39,6 +51,7 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+	fmt.Println("closing")
 }
 
 func initializeControllers(r *mux.Router) {
