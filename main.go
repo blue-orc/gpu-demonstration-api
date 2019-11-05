@@ -30,12 +30,12 @@ func main() {
 	mux1 := mux.NewRouter()
 	initializeControllers(mux1)
 	go func() {
+		fmt.Println("API starting")
 		err := http.ListenAndServe(":80",
 			handlers.CORS(
 				handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}),
 				handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"}),
 				handlers.AllowedOrigins([]string{"*"}))(mux1))
-		fmt.Println("API started")
 		if err != nil {
 			log.Fatal("API ListenAndServe: ", err)
 		}
@@ -45,7 +45,6 @@ func main() {
 	hub := newHub()
 	go hub.run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Hit")
 		serveWs(hub, w, r)
 	})
 
