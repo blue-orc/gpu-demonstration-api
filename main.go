@@ -65,5 +65,6 @@ func main() {
 
 func initializeControllers(r *mux.Router) {
 	controllers.InitStatusController(r)
+	controllers.InitScriptController(r)
 	controllers.InitPythonJobRunnerController(r)
 }

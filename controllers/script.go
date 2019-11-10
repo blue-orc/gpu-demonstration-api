@@ -13,6 +13,7 @@ import (
 //InitScriptController Initializes script endpoints
 func InitScriptController(r *mux.Router) {
 	r.HandleFunc("/script", selectScriptHandler).Methods("GET")
+	r.HandleFunc("/script", selectScriptHandler).Methods("POST")
 }
 
 func selectScriptHandler(w http.ResponseWriter, r *http.Request) {
