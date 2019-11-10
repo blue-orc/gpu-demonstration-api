@@ -51,7 +51,7 @@ func upsertScriptHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var s models.Script
-	err := utilities.ReadJsonHttpBody(r, s)
+	err := utilities.ReadJsonHttpBody(r, &s)
 	if err != nil {
 		utilities.RespondInternalServerError(w, err.Error())
 		return
