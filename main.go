@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"gpu-demonstration-api/controllers"
 	"gpu-demonstration-api/database"
 	"gpu-demonstration-api/device-monitor"
@@ -25,6 +26,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
 	database.Initialize()
 	go DeviceMonitor.Init()
 	fmt.Println("Device monitor started")
@@ -51,7 +56,7 @@ func main() {
 	})
 
 	fmt.Println("Starting websocket server")
-	err := http.ListenAndServe(*addr, nil)
+	err = http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("WS ListenAndServe: ", err)
 	}
