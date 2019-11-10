@@ -14,6 +14,11 @@ func InitPythonJobRunnerController(r *mux.Router) {
 }
 
 func jobRunnerHandler(w http.ResponseWriter, r *http.Request) {
-	go PythonJobRunner.Run()
+	sid, err := utilities.ReadIntQueryParameter(r, "scriptID")
+	if err != nil {
+		utilities.RespondBadRequest(w, err.Error())
+		return
+	}
+	go PythonJobRunner.Run(sid)
 	utilities.RespondOK(w)
 }
