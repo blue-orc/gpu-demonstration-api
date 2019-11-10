@@ -5,6 +5,7 @@ import (
 	"gpu-demonstration-api/models"
 	"gpu-demonstration-api/utilities"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -38,8 +39,13 @@ func selectScriptHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func upsertScriptHandler(w http.ResponseWriter, r *http.Request) {
+	scriptPassword, ok := os.LookupEnv("SCRIPT_PASSWORD")
+	if !ok {
+		utilities.RespondInternalServerError(w, "SCRIPT_PASSWORD missing from .env file")
+		return
+	}
 	username, password, ok := r.BasicAuth()
-	if !ok || username != "admin" || password != "YkMg2NEYRCT5zxv8" {
+	if !ok || username != "admin" || password != scriptPassword {
 		utilities.RespondUnauthorized(w, "Unauthorized")
 		return
 	}

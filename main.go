@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"gpu-demonstration-api/controllers"
+	"gpu-demonstration-api/database"
 	"gpu-demonstration-api/device-monitor"
 	"log"
 	"net/http"
@@ -24,6 +25,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	database.Initialize()
 	go DeviceMonitor.Init()
 	fmt.Println("Device monitor started")
 
