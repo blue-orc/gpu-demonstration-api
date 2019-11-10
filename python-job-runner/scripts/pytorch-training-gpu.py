@@ -70,10 +70,23 @@ def selectDischargeCycles(db):
     y_data = npRes[:,7].astype(np.float32)
     return x_data, y_data
 
+writeOutput("step", "Connecting to Oracle DB")
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
 
+startTime = time.time()
+writeOutput("startTime", startTime)
+
+writeOutput("step", "Querying data")
+sqlStartTime = time.time()
+writeOutput("sqlStartTime", sqlStartTime)
 x_data, y_data = selectDischargeCycles(db)
+writeOutput("sqlTime", "{:.3f}".format(time.time() - sqlStartTime))
+
+writeOutput("step", "Preparing model")
+pyTorchModelStartTime = time.time()
+writeOutput("pyTorchModelStartTime", pyTorchModelStartTime)
+
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
 input_dim = 7
@@ -82,7 +95,6 @@ writeOutput("dataLength", len(x_data))
 writeOutput("dataWidth", input_dim)
 x_test = x_norm[65499]
 y_test = y_norm[65499]
-print('ok')
 
 print("Loading data and model on to GPU")
 device = torch.device("cuda:0")
@@ -116,10 +128,13 @@ criterion = torch.nn.MSELoss()# Mean Squared Loss
 l_rate = 0.5
 optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
 
+writeOutput("pyTorchModelTime", "{:.3f}".format(time.time() - pyTorchModelStartTime))
+
 epochs = 50000
+writeOutput("step", "Training Model")
 writeOutput("epochs", epochs)
-startTime = time.time()
-writeOutput("startTime", startTime)
+trainingStartTime = time.time()
+writeOutput("trainingStartTime", trainingStartTime)
 for epoch in range(epochs):
     pctComplete = epoch / epochs * 100
     #print ("{:.2f}".format(pctComplete)+"%", end="\r")
@@ -135,7 +150,9 @@ for epoch in range(epochs):
         print(loss.item())
         sys.stdout.flush()
         
-writeOutput("executionTime", "{:.3f}".format(time.time() - startTime))
+writeOutput("step", "Finished")
+writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
+writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
 predicted = model(x_test_tensor)
 print('predicted: ' + str(predicted.item()))
 print('actual: ' + str(y_test))
