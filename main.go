@@ -31,7 +31,7 @@ func main() {
 		log.Fatal(err)
 	}
 	database.Initialize()
-	go DeviceMonitor.Init()
+	go devicemonitor.Init()
 	fmt.Println("Device monitor started")
 
 	mux1 := mux.NewRouter()

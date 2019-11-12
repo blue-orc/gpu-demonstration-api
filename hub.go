@@ -36,7 +36,7 @@ func (h *Hub) retrieveAndPushData() {
 	for {
 		ds := []byte("DeviceStatus")
 		ds = append(ds, byte('\u0017'))
-		dsBytes, err := DeviceMonitor.GetCurrentStatusJSON()
+		dsBytes, err := devicemonitor.GetCurrentStatusJSON()
 		if err != nil {
 			fmt.Println("Error getting Device Status: " + err.Error())
 			continue
@@ -55,6 +55,17 @@ func (h *Hub) retrieveAndPushData() {
 		js = append(js, jsBytes...)
 		js = append(js, byte('>'))
 		h.broadcast <- js
+
+		cpu := []byte("CPUMemoryUtilization")
+		cpu = append(cpu, byte('\u0017'))
+		cpuBytes, err := devicemonitor.GetCurrentStatusJSON()
+		if err != nil {
+			fmt.Println("Get CPU/Mem: " + err.Error())
+			continue
+		}
+		cpu = append(cpu, cpuBytes...)
+		cpu = append(cpu, byte('>'))
+		h.broadcast <- cpu
 
 		time.Sleep(1 * time.Second)
 	}

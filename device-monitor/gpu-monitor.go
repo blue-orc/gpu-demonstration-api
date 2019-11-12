@@ -1,4 +1,4 @@
-package DeviceMonitor
+package devicemonitor
 
 import (
 	"encoding/json"
