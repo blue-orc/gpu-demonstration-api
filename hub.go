@@ -58,7 +58,7 @@ func (h *Hub) retrieveAndPushData() {
 
 		cpu := []byte("CPUMemoryUtilization")
 		cpu = append(cpu, byte('\u0017'))
-		cpuBytes, err := devicemonitor.GetCurrentStatusJSON()
+		cpuBytes, err := devicemonitor.GetCPUMemoryUtilizationJSON()
 		if err != nil {
 			fmt.Println("Get CPU/Mem: " + err.Error())
 			continue
