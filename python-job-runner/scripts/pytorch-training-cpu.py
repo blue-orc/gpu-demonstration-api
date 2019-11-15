@@ -121,8 +121,6 @@ y_ok = y_tensor.unsqueeze(1)
 x_test_tensor = torch.Tensor(x_test)
 
 model = LinearRegression(input_dim,output_dim)
-model = torch.nn.DataParallel(model)
-model
 criterion = torch.nn.MSELoss()# Mean Squared Loss
 l_rate = 0.5
 optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
