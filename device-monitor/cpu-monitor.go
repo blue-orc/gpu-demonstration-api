@@ -47,7 +47,7 @@ func GetCPUInfoJSON() ([]byte, error) {
 
 func GetCPUPercent() ([]float64, error) {
 	var dur time.Duration
-	percent, err := cpu.Percent(dur, true)
+	percent, err := cpu.Percent(dur, false)
 	if err != nil {
 		fmt.Println("devicemonitor.GetCPUPercent: " + err.Error())
 		return nil, err
