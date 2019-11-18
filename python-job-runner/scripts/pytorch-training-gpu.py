@@ -145,7 +145,7 @@ def main(argv):
     y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
     d = data(x_tensor, y_tensor)
-    train_dl = torch.utils.data.DataLoader(d, batch_size=5, num_workers=6)
+    train_dl = torch.utils.data.DataLoader(d, pin_memory=True, num_workers=1)
     x_test_tensor = torch.Tensor(x_test)
 
     model = LinearRegression(input_dim,output_dim)
@@ -165,11 +165,12 @@ def main(argv):
     for epoch in range(epochs):
         print(str(epoch))
         pctComplete = epoch / epochs * 100
-        for xb, yb in train_dl:
+        for data, target in train_dl:
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
-            #xb, yb = xb.to(device), yb.to(device)
-            y_pred = model(xb)
-            loss = criterion(y_pred, yb)
+            data = data.to(device, non_blocking=True)
+            target = target.to(device, non_blocking=True)
+            y_pred = model(data)
+            loss = criterion(y_pred, target)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
