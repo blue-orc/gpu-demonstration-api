@@ -157,7 +157,7 @@ def main(argv):
         pctComplete = epoch / epochs * 100
         for xb, yb in train_dl:
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
-            y_pred = model(x_tensor)
+            y_pred = model(xb)
             loss = criterion(y_pred, yb)
             loss.backward()
             optimizer.step()
