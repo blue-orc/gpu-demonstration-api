@@ -167,7 +167,7 @@ def main(argv):
         if (epoch % 1000 == 0):
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
             writeOutput("loss", "{:.6f}".format(loss.item()))
-            print("loss " + loss.item())
+            print("loss " + str(loss.item()))
             sys.stdout.flush()
             
 
