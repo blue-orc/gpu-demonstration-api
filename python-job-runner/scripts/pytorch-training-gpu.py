@@ -165,6 +165,6 @@ for i, val in enumerate(x_test):
     diffs.append(diff)
 
 avg = np.average(diffs)
-writeOutput("accuracy", avg)
+writeOutput("accuracy", avg * 100)
 writeOutput("step", "Finished")
 print('fin')
