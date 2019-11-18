@@ -156,9 +156,6 @@ for epoch in range(epochs):
 
 writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
 writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
-predicted = model(x_test_tensor)
-print('predicted: ' + str(predicted.item()))
-print('actual: ' + str(y_test))
 
 diffs = []
 for i, val in enumerate(x_test):
