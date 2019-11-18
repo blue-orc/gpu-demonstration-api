@@ -2,6 +2,7 @@ import sys
 import torch
 import time
 import numpy as np
+from sklearn.model_selection import train_test_split
 from torch.autograd import Variable
 from torch.nn import functional as F
 import cx_Oracle
@@ -70,6 +71,8 @@ def selectDischargeCycles(db):
     y_data = npRes[:,7].astype(np.float32)
     return x_data, y_data
 
+writeOutput("scriptName", "Battery Remaining Useful Life")
+writeOutput("processor", "CPU")
 writeOutput("step", "Connecting to Oracle DB")
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
@@ -89,12 +92,13 @@ writeOutput("pyTorchModelStartTime", pyTorchModelStartTime)
 
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
+
+x_train, x_test, y_train, y_test = train_test_split(x_norm, y_norm, test_size=0.20, random_state=42)
+
 input_dim = 7
 output_dim = 1
 writeOutput("dataLength", len(x_data))
 writeOutput("dataWidth", input_dim)
-x_test = x_norm[65499]
-y_test = y_norm[65499]
 
 print("Loading data and model on to GPU")
 
@@ -147,10 +151,17 @@ for epoch in range(epochs):
         print(loss.item())
         sys.stdout.flush()
         
-writeOutput("step", "Finished")
 writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
 writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
-predicted = model(x_test_tensor)
-print('predicted: ' + str(predicted.item()))
-print('actual: ' + str(y_test))
+
+diffs = []
+for i, val in enumerate(x_test):
+    x_test_tensor = torch.from_numpy(val)
+    predicted = model(x_test_tensor)
+    diff = abs(predicted.item() - y_test[i])
+    diffs.append(diff)
+
+avg = np.average(diffs)
+writeOutput("accuracy", avg * 100)
+writeOutput("step", "Finished")
 print('fin')

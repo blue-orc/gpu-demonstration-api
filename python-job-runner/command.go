@@ -24,6 +24,7 @@ type PytorchJobStatus struct {
 	Epochs           string
 	Accuracy         string
 	ScriptName       string
+	Processor        string
 }
 
 var Status PytorchJobStatus
@@ -105,6 +106,8 @@ func updateStatus(r io.Reader) {
 			Status.Accuracy = res[1]
 		} else if res[0] == "scriptName" {
 			Status.ScriptName = res[1]
+		} else if res[0] == "processor" {
+			Status.Processor = res[1]
 		} else {
 			fmt.Println(scanner.Text())
 		}

@@ -1,8 +1,8 @@
 import sys
-from sklearn.model_selection import train_test_split
 import torch
 import time
 import numpy as np
+from sklearn.model_selection import train_test_split
 from torch.autograd import Variable
 from torch.nn import functional as F
 import cx_Oracle
@@ -72,6 +72,7 @@ def selectDischargeCycles(db):
     return x_data, y_data
 
 writeOutput("scriptName", "Battery Remaining Useful Life")
+writeOutput("processor", "GPU")
 writeOutput("step", "Connecting to Oracle DB")
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
