@@ -37,7 +37,7 @@ func GetStatusJSON() ([]byte, error) {
 	return sBytes, nil
 }
 
-func Run(scriptID int) {
+func Run(scriptID int, epochs int) {
 	var sr repositories.Script
 	s, err := sr.SelectByID(scriptID)
 	if err != nil || s.ID < 1 {
@@ -50,7 +50,7 @@ func Run(scriptID int) {
 
 	Status.Status = "Running"
 	//cmd := exec.Command("python3", "/home/ubuntu/go/src/gpu-demonstration-api/python-job-runner/scripts/pytorch-training-gpu.py")
-	cmd := exec.Command("python3", s.LocationPath, fmt.Sprintf("-e %d", 25000))
+	cmd := exec.Command("python3", s.LocationPath, fmt.Sprintf("-e %d", epochs))
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		fmt.Println("Run Python Script Error: " + err.Error())
