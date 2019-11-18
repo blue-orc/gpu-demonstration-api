@@ -164,7 +164,7 @@ print('actual: ' + str(y_test))
 
 diffs = []
 for i, val in enumerate(x_test):
-    x_test_tensor = torch.Tensor(val)
+    x_test_tensor = torch.from_numpy(val)
     predicted = model(x_test_tensor)
     diff = abs(predicted - y_test[i])
     diffs.append(diff)
