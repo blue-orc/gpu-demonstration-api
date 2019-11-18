@@ -161,7 +161,7 @@ diffs = []
 for i, val in enumerate(x_test):
     x_test_tensor = torch.from_numpy(val)
     predicted = model(x_test_tensor)
-    diff = abs(predicted - y_test[i])
+    diff = abs(predicted.item() - y_test[i])
     diffs.append(diff)
 
 avg = np.average(diffs)
