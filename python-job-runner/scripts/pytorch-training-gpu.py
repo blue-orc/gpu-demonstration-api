@@ -142,7 +142,7 @@ def main(argv):
     model = LinearRegression(input_dim,output_dim)
     model.to(device)
     criterion = torch.nn.MSELoss()# Mean Squared Loss
-    l_rate = 0.5
+    l_rate = 0.25
     optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
 
     writeOutput("pyTorchModelTime", "{:.3f}".format(time.time() - pyTorchModelStartTime))
@@ -154,25 +154,27 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
+        print(str(epoch))
         pctComplete = epoch / epochs * 100
         for xb, yb in train_dl:
             xb, yb = xb.to(device), yb.to(device)
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
             y_pred = model(xb)
             loss = criterion(y_pred, yb)
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            optimizer.zero_grad()
         if (epoch % 1000 == 0):
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
             writeOutput("loss", "{:.6f}".format(loss.item()))
-            print(loss.item())
+            print("loss " + loss.item())
             sys.stdout.flush()
             
 
     writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
     writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
 
+    model.eval()
     diffs = []
     for i, val in enumerate(x_test):
         x_test_tensor = torch.from_numpy(val)
