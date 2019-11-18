@@ -136,7 +136,7 @@ def main(argv):
     y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
     train_ds = torch.utils.data.TensorDataset(x_tensor, y_ok)
-    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=64, shuffle=True, num_workers=6)
+    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=12, shuffle=True, num_workers=6)
     x_test_tensor = torch.Tensor(x_test)
 
     model = LinearRegression(input_dim,output_dim)
