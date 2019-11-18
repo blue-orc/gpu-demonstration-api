@@ -155,7 +155,7 @@ for epoch in range(epochs):
         print(loss.item())
         sys.stdout.flush()
         
-writeOutput("step", "Finished")
+
 writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
 writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
 predicted = model(x_test_tensor)
@@ -170,5 +170,5 @@ for i, val in enumerate(x_test):
 
 avg = np.average(diffs)
 writeOutput("accuracy", avg)
-
+writeOutput("step", "Finished")
 print('fin')
