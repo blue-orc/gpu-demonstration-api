@@ -130,7 +130,7 @@ def main(argv):
             out = torch.sigmoid(self.linear(x))
             return out
 
-    class data(Dataset):
+    class data(torch.utils.data.Dataset):
         def __init__(self, inputs, targets):
             self.x = inputs
             self.y = targets
