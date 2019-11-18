@@ -73,6 +73,11 @@ def selectDischargeCycles(db):
 
 def main(argv):
     opts, args = getopt.getopt(argv, 'e:')
+    params = {
+        'batch_size': 64,
+        'shuffle': True,
+        'num_workers': 6
+    }
     epochs = 50000
     for opt, arg in opts:
         if opt == '-e':
@@ -129,6 +134,8 @@ def main(argv):
 
     x_tensor = torch.Tensor(x_train).to(device)
     y_tensor = torch.Tensor(y_train).to(device)
+    train_ds = torch.utils.data.TensorDataset(x_tensor, y_tensor)
+    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=64, shuffle=True)
     y_ok = y_tensor.unsqueeze(1)
     x_test_tensor = torch.Tensor(x_test)
 
@@ -145,15 +152,16 @@ def main(argv):
     writeOutput("epochs", epochs)
     trainingStartTime = time.time()
     writeOutput("trainingStartTime", trainingStartTime)
+
     for epoch in range(epochs):
         pctComplete = epoch / epochs * 100
-        #print ("{:.2f}".format(pctComplete)+"%", end="\r")
-        model.train()
-        optimizer.zero_grad()
-        y_pred = model(x_tensor)
-        loss = criterion(y_pred, y_ok)
-        loss.backward()
-        optimizer.step()
+        for xb, yb in train_dl:
+            #print ("{:.2f}".format(pctComplete)+"%", end="\r")
+            y_pred = model(x_tensor)
+            loss = criterion(y_pred, yb)
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
         if (epoch % 1000 == 0):
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
             writeOutput("loss", "{:.6f}".format(loss.item()))
