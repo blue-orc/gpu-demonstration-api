@@ -140,7 +140,7 @@ def main(argv):
     model.to(device)
     criterion = torch.nn.MSELoss().to(device)# Mean Squared Loss
     l_rate = 0.5
-    optimizer = torch.optim.SGD(model.parameters(), lr = l_rate).to(device) #Stochastic Gradient Descent
+    optimizer = torch.optim.SGD(model.parameters(), lr = l_rate)#Stochastic Gradient Descent
 
     writeOutput("pyTorchModelTime", "{:.3f}".format(time.time() - pyTorchModelStartTime))
 
