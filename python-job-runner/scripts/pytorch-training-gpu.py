@@ -1,4 +1,5 @@
 import sys
+from sklearn.model_selection import train_test_split
 import torch
 import time
 import numpy as np
@@ -70,6 +71,7 @@ def selectDischargeCycles(db):
     y_data = npRes[:,7].astype(np.float32)
     return x_data, y_data
 
+writeOutput("scriptName", "Battery Remaining Useful Life")
 writeOutput("step", "Connecting to Oracle DB")
 db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
 print("Connected to Oracle ADW")
@@ -89,6 +91,9 @@ writeOutput("pyTorchModelStartTime", pyTorchModelStartTime)
 
 x_norm = x_data / x_data.max(axis=0)
 y_norm = y_data / y_data.max(axis=0)
+
+x_train, x_test, y_train, y_test = train_test_split(x_norm, y_norm, text_size=0.20, random_state=42)
+
 input_dim = 7
 output_dim = 1
 writeOutput("dataLength", len(x_data))
@@ -116,8 +121,8 @@ class LinearRegression(torch.nn.Module):
 
 
 
-x_tensor = torch.Tensor(x_norm).to(device)
-y_tensor = torch.Tensor(y_norm).to(device)
+x_tensor = torch.Tensor(x_train).to(device)
+y_tensor = torch.Tensor(y_train).to(device)
 y_ok = y_tensor.unsqueeze(1)
 x_test_tensor = torch.Tensor(x_test)
 
@@ -156,4 +161,14 @@ writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
 predicted = model(x_test_tensor)
 print('predicted: ' + str(predicted.item()))
 print('actual: ' + str(y_test))
+
+diffs = []
+for i, val in enumerate(x_test):
+    predicted = model(val)
+    diff = abs(predicted - y_test[i])
+    diffs.append(diff)
+
+avg = np.average(diffs)
+writeOutput("accuracy", avg)
+
 print('fin')

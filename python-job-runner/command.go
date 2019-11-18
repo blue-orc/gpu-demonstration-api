@@ -22,6 +22,8 @@ type PytorchJobStatus struct {
 	DataLength       string
 	DataWidth        string
 	Epochs           string
+	Accuracy         string
+	ScriptName       string
 }
 
 var Status PytorchJobStatus
@@ -99,6 +101,10 @@ func updateStatus(r io.Reader) {
 			Status.SqlTime = res[1]
 		} else if res[0] == "pyTorchModelTime" {
 			Status.PyTorchModelTime = res[1]
+		} else if res[0] == "accuracy" {
+			Status.Accuracy = res[1]
+		} else if res[0] == "scriptName" {
+			Status.ScriptName = res[1]
 		} else {
 			fmt.Println(scanner.Text())
 		}
