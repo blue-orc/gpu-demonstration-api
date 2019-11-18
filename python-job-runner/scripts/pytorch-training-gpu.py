@@ -134,7 +134,7 @@ def main(argv):
     y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
     y_ok = y_ok.to(device)
-    x_test_tensor = torch.Tensor(x_test)
+    x_test_tensor = torch.Tensor(x_test).to(device)
 
     model = LinearRegression(input_dim,output_dim)
     model.to(device)
