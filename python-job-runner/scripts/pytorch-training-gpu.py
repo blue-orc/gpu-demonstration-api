@@ -130,28 +130,16 @@ def main(argv):
             out = torch.sigmoid(self.linear(x))
             return out
 
-    class data(torch.utils.data.Dataset):
-        def __init__(self, inputs, targets):
-            self.x = inputs
-            self.y = targets
-
-        def __len__(self):
-            return self.x.size()[0]
-
-        def __getitem__(self, idx):
-            return (self.x[idx], self.y[idx])
-
-    x_tensor = torch.Tensor(x_train)
+    x_tensor = torch.Tensor(x_train).to(device)
     y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
-    d = data(x_tensor, y_tensor)
-    train_dl = torch.utils.data.DataLoader(d, pin_memory=True, num_workers=1)
+    y_ok.to(device)
     x_test_tensor = torch.Tensor(x_test)
 
     model = LinearRegression(input_dim,output_dim)
     model.to(device)
     criterion = torch.nn.MSELoss()# Mean Squared Loss
-    l_rate = 0.25
+    l_rate = 0.5
     optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
 
     writeOutput("pyTorchModelTime", "{:.3f}".format(time.time() - pyTorchModelStartTime))
@@ -163,17 +151,12 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
-        print(str(epoch))
         pctComplete = epoch / epochs * 100
-        for data, target in train_dl:
-            #print ("{:.2f}".format(pctComplete)+"%", end="\r")
-            data = data.to(device, non_blocking=True)
-            target = target.to(device, non_blocking=True)
-            y_pred = model(data)
-            loss = criterion(y_pred, target)
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+        y_pred = model(x_tensor)
+        loss = criterion(y_pred, y_ok)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
         if (epoch % 1000 == 0):
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
             writeOutput("loss", "{:.6f}".format(loss.item()))
