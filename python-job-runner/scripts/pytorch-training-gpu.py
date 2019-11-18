@@ -134,13 +134,14 @@ def main(argv):
 
     x_tensor = torch.Tensor(x_train).to(device)
     y_tensor = torch.Tensor(y_train).to(device)
-    train_ds = torch.utils.data.TensorDataset(x_tensor, y_tensor)
-    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=64, shuffle=True)
     y_ok = y_tensor.unsqueeze(1)
+    train_ds = torch.utils.data.TensorDataset(x_tensor, y_ok)
+    train_dl = torch.utils.data.DataLoader(train_ds, batch_size=64, shuffle=True)
+    train_ds.to(device)
+    train_dl.to(device)
     x_test_tensor = torch.Tensor(x_test)
 
     model = LinearRegression(input_dim,output_dim)
-    model = torch.nn.DataParallel(model)
     model.to(device)
     criterion = torch.nn.MSELoss()# Mean Squared Loss
     l_rate = 0.5
@@ -157,6 +158,7 @@ def main(argv):
         pctComplete = epoch / epochs * 100
         for xb, yb in train_dl:
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
+            model.train()
             y_pred = model(xb)
             loss = criterion(y_pred, yb)
             loss.backward()
