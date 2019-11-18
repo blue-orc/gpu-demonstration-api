@@ -152,12 +152,12 @@ def main(argv):
     trainingStartTime = time.time()
     writeOutput("trainingStartTime", trainingStartTime)
 
+    model.train()
     for epoch in range(epochs):
         pctComplete = epoch / epochs * 100
         for xb, yb in train_dl:
             xb, yb = xb.to(device), yb.to(device)
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
-            model.train()
             y_pred = model(xb)
             loss = criterion(y_pred, yb)
             loss.backward()
