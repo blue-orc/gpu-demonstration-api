@@ -132,8 +132,8 @@ def main(argv):
 
 
 
-    x_tensor = torch.Tensor(x_train).to(device)
-    y_tensor = torch.Tensor(y_train).to(device)
+    x_tensor = torch.Tensor(x_train)
+    y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
     train_ds = torch.utils.data.TensorDataset(x_tensor, y_ok)
     train_dl = torch.utils.data.DataLoader(train_ds, batch_size=64, shuffle=True)
@@ -155,6 +155,7 @@ def main(argv):
     for epoch in range(epochs):
         pctComplete = epoch / epochs * 100
         for xb, yb in train_dl:
+            xb, yb = xb.to(device), yb.to(device)
             #print ("{:.2f}".format(pctComplete)+"%", end="\r")
             model.train()
             y_pred = model(xb)
