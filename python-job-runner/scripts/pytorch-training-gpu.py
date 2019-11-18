@@ -98,8 +98,6 @@ input_dim = 7
 output_dim = 1
 writeOutput("dataLength", len(x_data))
 writeOutput("dataWidth", input_dim)
-x_test = x_norm[65499]
-y_test = y_norm[65499]
 
 print("Loading data and model on to GPU")
 device = torch.device("cuda:0")
