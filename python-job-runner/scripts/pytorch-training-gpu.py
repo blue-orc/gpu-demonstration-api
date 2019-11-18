@@ -134,7 +134,6 @@ def main(argv):
     y_tensor = torch.Tensor(y_train)
     y_ok = y_tensor.unsqueeze(1)
     y_ok = y_ok.to(device)
-    x_test_tensor = torch.Tensor(x_test).to(device)
 
     model = LinearRegression(input_dim,output_dim)
     model.to(device)
@@ -167,10 +166,11 @@ def main(argv):
     writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
     writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
 
+    writeOutput("step", "Test")
     model.eval()
     diffs = []
     for i, val in enumerate(x_test):
-        x_test_tensor = torch.from_numpy(val)
+        x_test_tensor = torch.from_numpy(val).to(device)
         predicted = model(x_test_tensor)
         diff = abs(predicted.item() - y_test[i])
         diffs.append(diff)
