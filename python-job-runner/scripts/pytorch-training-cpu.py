@@ -1,4 +1,4 @@
-import sys
+import sys, getopt
 import torch
 import time
 import numpy as np
