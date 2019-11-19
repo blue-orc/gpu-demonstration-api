@@ -73,11 +73,7 @@ def selectDischargeCycles(db):
 
 def main(argv):
     opts, args = getopt.getopt(argv, 'e:')
-    params = {
-        'batch_size': 64,
-        'shuffle': True,
-        'num_workers': 6
-    }
+
     epochs = 50000
     for opt, arg in opts:
         if opt == '-e':
