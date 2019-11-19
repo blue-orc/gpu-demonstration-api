@@ -19,6 +19,11 @@ func jobRunnerHandler(w http.ResponseWriter, r *http.Request) {
 		utilities.RespondBadRequest(w, err.Error())
 		return
 	}
-	go PythonJobRunner.Run(sid)
+	epochs, err := utilities.ReadIntQueryParameter(r, "epochs")
+	if err != nil {
+		utilities.RespondBadRequest(w, err.Error())
+		return
+	}
+	go PythonJobRunner.Run(sid, epochs)
 	utilities.RespondOK(w)
 }
