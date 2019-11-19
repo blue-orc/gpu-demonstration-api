@@ -72,7 +72,7 @@ def selectDischargeCycles(db):
     return x_data, y_data
 
 def main(argv):
-    pts, args = getopt.getopt(argv, 'e:')
+    opts, args = getopt.getopt(argv, 'e:')
 
     epochs = 50000
     for opt, arg in opts:
