@@ -157,11 +157,10 @@ def main(argv):
         if (i % 1000 == 0 or i == 0):
             writeOutput("loss", "{:.6f}".format(loss.item()))
             f = open("loss.txt", "a")
-            f.write(str(i) + "," + "{:.6f}".format(loss.item()) + "\n")
+            f.write(str(i) + "," + "{:.3f}".format(time.time() - trainingStartTime) + "," + str(loss.item()) + "\n")
             f.close()
-            print("loss " + str(loss.item()))
             sys.stdout.flush()
-            if (float(loss.item()) > previous_loss):
+            if (float(loss.item()) > previous_loss or float(loss.item()) == previous_loss):
                 is_loss_lower = False
         i = i + 1
             
