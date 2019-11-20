@@ -154,15 +154,16 @@ def main(argv):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        if (i % 1000 == 0):
+        if (i % 1000 == 0 or i == 0):
             writeOutput("loss", "{:.6f}".format(loss.item()))
             f = open("loss.txt", "a")
-            f.write(str(i) + ":" + "{:.6f}".format(loss.item()))
+            f.write(str(i) + "," + "{:.6f}".format(loss.item()) + "\n")
             f.close()
             print("loss " + str(loss.item()))
             sys.stdout.flush()
             if (float(loss.item()) > previous_loss):
                 is_loss_lower = False
+        i = i + 1
             
 
     writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
