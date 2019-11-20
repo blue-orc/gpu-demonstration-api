@@ -180,6 +180,9 @@ def main(argv):
 
     avg = np.average(diffs)
     writeOutput("accuracy", avg * 100)
+    f = open("loss.txt", "a")
+    f.write("accuracy," + str(avg * 100) + "\n")
+    f.close()
     writeOutput("step", "Finished")
     print('fin')
 
