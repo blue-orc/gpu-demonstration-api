@@ -162,6 +162,7 @@ def main(argv):
             sys.stdout.flush()
             if (float(loss.item()) > previous_loss or float(loss.item()) == previous_loss):
                 is_loss_lower = False
+            previous_loss = float(loss.item())
         i = i + 1
             
 
