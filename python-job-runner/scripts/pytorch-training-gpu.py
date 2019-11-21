@@ -146,13 +146,13 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
-        pctComplete = epoch / epochs * 100
         y_pred = model(x_tensor)
         loss = criterion(y_pred, y_ok)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         if (epoch % 1000 == 0):
+            pctComplete = epoch / epochs * 100
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
             writeOutput("loss", "{:.6f}".format(loss.item()))
             print("loss " + str(loss.item()))
