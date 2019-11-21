@@ -148,7 +148,7 @@ def main(argv):
     i = 0
     previous_loss = 100
     is_loss_lower = True
-    while(i<100):
+    while(i < 4617000):
         y_pred = model(x_tensor)
         loss = criterion(y_pred, y_ok)
         optimizer.zero_grad()
