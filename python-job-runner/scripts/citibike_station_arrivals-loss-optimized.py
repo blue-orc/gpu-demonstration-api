@@ -60,7 +60,7 @@ def main(argv):
     writeOutput("step", "Querying data")
     sqlStartTime = time.time()
     writeOutput("sqlStartTime", sqlStartTime)
-    x_data, y_data = selectDischargeCycles(db)
+    x_data, y_data = selectStationStatisticsByDay(db)
     writeOutput("sqlTime", "{:.3f}".format(time.time() - sqlStartTime))
 
     writeOutput("step", "Preparing model")
