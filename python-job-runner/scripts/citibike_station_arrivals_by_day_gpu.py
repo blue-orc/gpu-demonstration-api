@@ -80,11 +80,11 @@ def main(argv):
 
     print("Loading data and model on to GPU")
 
-    class LinearRegression(torch.nn.Module):
+    class LogisticRegression(torch.nn.Module):
 
         def __init__(self, input_dim, output_dim):
 
-            super(LinearRegression, self).__init__() 
+            super(LogisticRegression, self).__init__() 
             # Calling Super Class's constructor
             self.linear = torch.nn.Linear(input_dim, output_dim)
             # nn.linear is defined in nn.Module
@@ -101,7 +101,7 @@ def main(argv):
     y_tensor = torch.Tensor(y_norm)
     y_ok = y_tensor.unsqueeze(1).to(device)
 
-    model = LinearRegression(input_dim,output_dim).to(device)
+    model = LogisticRegression(input_dim,output_dim).to(device)
     criterion = torch.nn.MSELoss().to(device)# Mean Squared Loss
     l_rate = 0.5
     optimizer = torch.optim.SGD(model.parameters(), lr = l_rate) #Stochastic Gradient Descent
