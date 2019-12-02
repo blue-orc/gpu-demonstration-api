@@ -125,7 +125,7 @@ def main(argv):
             inputs, labels = data[0].to(device), data[1].to(device)
             optimizer.zero_grad()
             y_pred = model(inputs)
-            loss = criterion(y_pred, y_ok)
+            loss = criterion(y_pred, labels)
             loss.backward()
             optimizer.step()
     #for epoch in range(epochs):
