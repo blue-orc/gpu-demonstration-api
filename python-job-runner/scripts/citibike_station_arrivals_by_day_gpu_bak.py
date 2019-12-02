@@ -75,7 +75,6 @@ def main(argv):
 
     x_train, x_test, y_train, y_test = train_test_split(x_norm, y_norm, test_size=0.20, random_state=42)
 
-
     input_dim = len(x_data[0])
     output_dim = 1
     writeOutput("dataLength", len(x_data))
@@ -104,9 +103,6 @@ def main(argv):
     y_tensor = torch.Tensor(y_norm)
     y_ok = y_tensor.unsqueeze(1).to(device)
 
-    trainds = torch.utils.data.TorchDataset(x_tensor, y_ok)
-    trainloader = torch.utils.data.DataLoader(trainds, batch_size=1, shuffle=False, num_workers=0)
-
     model = LogisticRegression(input_dim,output_dim).to(device)
     criterion = torch.nn.MSELoss().to(device)# Mean Squared Loss
     l_rate = 0.5
@@ -121,19 +117,11 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
-        for i, data in enumerate(trainloader, 0):
-            inputs, labels = data
-            optimizer.zero_grad()
-            y_pred = model(inputs)
-            loss = criterion(y_pred, y_ok)
-            loss.backward()
-            optimizer.step()
-    #for epoch in range(epochs):
-    #    y_pred = model(x_tensor)
-    #    loss = criterion(y_pred, y_ok)
-    #    optimizer.zero_grad()
-    #    loss.backward()
-    #    optimizer.step()
+        y_pred = model(x_tensor)
+        loss = criterion(y_pred, y_ok)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
         if (epoch % 1000 == 0):
             pctComplete = epoch / epochs * 100
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
