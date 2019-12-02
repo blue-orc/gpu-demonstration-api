@@ -104,7 +104,7 @@ def main(argv):
     y_tensor = torch.Tensor(y_norm)
     y_ok = y_tensor.unsqueeze(1).to(device)
 
-    trainds = torch.utils.data.TorchDataset(x_tensor, y_ok)
+    trainds = torch.utils.data.TensorDataset(x_tensor, y_ok)
     trainloader = torch.utils.data.DataLoader(trainds, batch_size=1, shuffle=False, num_workers=0)
 
     model = LogisticRegression(input_dim,output_dim).to(device)
