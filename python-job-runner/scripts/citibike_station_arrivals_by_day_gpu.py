@@ -140,7 +140,6 @@ def main(argv):
         predicted = model(x_test_tensor)
         diff = abs(predicted.item() - y_test[i])
         diffs.append(float(diff))
-    print('diffs', diffs)
     avg = np.average(diffs)
     writeOutput("accuracy", avg * 100)
     writeOutput("step", "Finished")
