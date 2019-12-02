@@ -105,7 +105,7 @@ def main(argv):
     y_ok = y_tensor.unsqueeze(1).to(device)
 
     trainds = torch.utils.data.TensorDataset(x_tensor, y_ok)
-    trainloader = torch.utils.data.DataLoader(trainds, batch_size=1, shuffle=False, num_workers=0)
+    trainloader = torch.utils.data.DataLoader(trainds, batch_size=32, shuffle=False, num_workers=2)
 
     model = LogisticRegression(input_dim,output_dim).to(device)
     criterion = torch.nn.MSELoss().to(device)# Mean Squared Loss
@@ -122,7 +122,7 @@ def main(argv):
     model.train()
     for epoch in range(epochs):
         for i, data in enumerate(trainloader, 0):
-            inputs, labels = data
+            inputs, labels = data[0].to(device), data[1].to(device)
             optimizer.zero_grad()
             y_pred = model(inputs)
             loss = criterion(y_pred, y_ok)
