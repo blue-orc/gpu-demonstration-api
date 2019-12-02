@@ -100,12 +100,12 @@ def main(argv):
 
 
 
-    x_tensor = torch.Tensor(x_norm).to(device)
+    x_tensor = torch.Tensor(x_norm)
     y_tensor = torch.Tensor(y_norm)
-    y_ok = y_tensor.unsqueeze(1).to(device)
+    y_ok = y_tensor.unsqueeze(1)
 
     trainds = torch.utils.data.TensorDataset(x_tensor, y_ok)
-    trainloader = torch.utils.data.DataLoader(trainds, batch_size=32, shuffle=False, num_workers=0)
+    trainloader = torch.utils.data.DataLoader(trainds, batch_size=32, shuffle=False, num_workers=2)
 
     model = LogisticRegression(input_dim,output_dim).to(device)
     criterion = torch.nn.MSELoss().to(device)# Mean Squared Loss
