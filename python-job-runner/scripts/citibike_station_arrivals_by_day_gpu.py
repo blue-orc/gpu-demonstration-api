@@ -137,7 +137,7 @@ def main(argv):
         x_test_tensor = torch.from_numpy(val).to(device)
         predicted = model(x_test_tensor)
         diff = abs(predicted.item() - y_test[i])
-        diffs.append(diff)
+        diffs.append(float(diff))
     print(diffs)
     avg = np.average(diffs)
     writeOutput("accuracy", avg * 100)
