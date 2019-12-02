@@ -27,6 +27,7 @@ def selectStationStatisticsByDay(db):
         JOIN citibike_station_statistics_by_day ON citibike_station.station_id = citibike_station_statistics_by_day.station_id
         WHERE citibike_station_statistics_by_day.m_date >= to_date('29-10-2013', 'dd-mm-yyyy')
         AND citibike_station_statistics_by_day.number_arrivals_previous_90_days > 0
+        AND citibike_station_statistics_by_day.number_departures_previous_90_days > 0
     """
     cur.execute(statement)
     res = cur.fetchall()
