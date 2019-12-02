@@ -121,6 +121,7 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
+        print(epoch)
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             inputs, labels = data[0].to(device), data[1].to(device)
