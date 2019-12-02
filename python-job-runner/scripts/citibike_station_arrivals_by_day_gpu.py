@@ -121,6 +121,7 @@ def main(argv):
 
     model.train()
     for epoch in range(epochs):
+        running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             inputs, labels = data[0].to(device), data[1].to(device)
             optimizer.zero_grad()
@@ -128,18 +129,18 @@ def main(argv):
             loss = criterion(y_pred, labels)
             loss.backward()
             optimizer.step()
+            running_loss += loss.item()
     #for epoch in range(epochs):
     #    y_pred = model(x_tensor)
     #    loss = criterion(y_pred, y_ok)
     #    optimizer.zero_grad()
     #    loss.backward()
     #    optimizer.step()
-        if (epoch % 1000 == 0):
+        if (epoch % 100 == 0):
             pctComplete = epoch / epochs * 100
             writeOutput("percentComplete", "{:.2f}".format(pctComplete))
-            writeOutput("loss", "{:.6f}".format(loss.item()))
-            print(loss.item())
-            sys.stdout.flush()
+            writeOutput("loss", "{:.6f}".format(running_loss))
+            print(running_loss)
             
     writeOutput("totalTime", "{:.3f}".format(time.time() - startTime))
     writeOutput("trainingTime", "{:.3f}".format(time.time() - trainingStartTime))
