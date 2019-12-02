@@ -36,6 +36,7 @@ def selectStationStatisticsByDay(db):
     npRes = np.array(res).astype(np.float32)
     #this line clears out nan values, need to fix in DB
     npRes =  npRes[~np.isnan(npRes).any(axis=1)]
+    npRes =  npRes[~(npRes==0).any(axis=1)]
     x_data = npRes[:, :6].astype(np.float32)
     y_data = npRes[:,6].astype(np.float32)
     return x_data, y_data
