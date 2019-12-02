@@ -70,6 +70,7 @@ def main(argv):
     writeOutput("pyTorchModelStartTime", pyTorchModelStartTime)
 
     x_norm = x_data / x_data.max(axis=0)
+    x_norm = x_norm[np.logical_not(np.isnan(x_norm))]
     y_norm = y_data / y_data.max(axis=0)
 
     x_train, x_test, y_train, y_test = train_test_split(x_norm, y_norm, test_size=0.20, random_state=42)
