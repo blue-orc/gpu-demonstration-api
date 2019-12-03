@@ -19,10 +19,19 @@ func selectSampleDatahandler(w http.ResponseWriter, r *http.Request) {
 		utilities.RespondBadRequest(w, err.Error())
 		return
 	}
-	var repo repositories.BatteryRepo
 	switch scriptName {
 	case "Battery Remaining Useful Life":
+		var repo repositories.BatteryRepo
 		res, err := repo.SelectSampleDischargeTop(100)
+		if err != nil {
+			utilities.RespondInternalServerError(w, err.Error())
+			return
+		}
+		utilities.RespondJSON(w, res)
+		return
+	case "Citibike Station Arrivals By Day":
+		var repo repositories.CitibikeRepo
+		res, err := repo.SelectSampleStationStatisticsByDay(100)
 		if err != nil {
 			utilities.RespondInternalServerError(w, err.Error())
 			return

@@ -73,7 +73,8 @@ func (sr *Script) SelectAll() ([]models.Script, error) {
 			"DESCRIPTION",
 			"LOCATION_PATH",
 			"LOCATION_TYPE"
-		FROM "SCRIPT"`,
+		FROM "SCRIPT"
+		WHERE "IS_ACTIVE" = 1`,
 	)
 	if err != nil {
 		return ss, err
