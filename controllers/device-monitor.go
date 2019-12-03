@@ -8,8 +8,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//InitDeviceMontitorController Initializes device endpoints
-func InitDeviceMontitorController(r *mux.Router) {
+//InitDeviceMonitorController Initializes device endpoints
+func InitDeviceMonitorController(r *mux.Router) {
 	r.HandleFunc("/devicemonitor/cpu", getCPUInfo).Methods("GET")
 	r.HandleFunc("/devicemonitor/gpu", getGPUInfo).Methods("GET")
 }
