@@ -25,7 +25,7 @@ func (cr *CitibikeRepo) SelectSampleStationStatisticsByDay(top int) ([]models.Ci
 		AND citibike_station_statistics_by_day.number_departures_previous_90_days > 0
 		AND citibike_station.latitude != 0
 		AND citibike_station.longitude != 0
-		WHERE ROWNUM <= :1`,
+		AND ROWNUM <= :1`,
 		top,
 	)
 	if err != nil {
