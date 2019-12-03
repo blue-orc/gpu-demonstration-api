@@ -31,18 +31,13 @@ func GetCPUMemoryUtilizationJSON() ([]byte, error) {
 	return cpuBytes, nil
 }
 
-func GetCPUInfoJSON() ([]byte, error) {
+func GetCPUInfo() ([]cpu.InfoStat, error) {
 	cpu, err := cpu.Info()
 	if err != nil {
 		fmt.Println("devicemonitor.GetCPUInfoJSON: " + err.Error())
 		return nil, err
 	}
-	cpuBytes, err := json.Marshal(cpu)
-	if err != nil {
-		fmt.Println("devicemonitor.GetCPUInfoJSON: " + err.Error())
-		return cpuBytes, err
-	}
-	return cpuBytes, nil
+	return cpu, nil
 }
 
 func GetCPUPercent() ([]float64, error) {
