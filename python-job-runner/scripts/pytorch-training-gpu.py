@@ -82,7 +82,7 @@ def main(argv):
     writeOutput("scriptName", "Battery Remaining Useful Life")
     writeOutput("processor", "GPU")
     writeOutput("step", "Connecting to Oracle DB")
-    db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
+    db = cx_Oracle.connect(user="justin", password="Password1234!", dsn="burmigradw_high")
     print("Connected to Oracle ADW")
 
     startTime = time.time()
@@ -91,6 +91,7 @@ def main(argv):
     writeOutput("step", "Querying data")
     sqlStartTime = time.time()
     writeOutput("sqlStartTime", sqlStartTime)
+    
     x_data, y_data = selectDischargeCycles(db)
     writeOutput("sqlTime", "{:.3f}".format(time.time() - sqlStartTime))
 

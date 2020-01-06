@@ -1,0 +1,31 @@
+statement = """
+        SELECT 
+            customer.age,
+            customer.gender,
+            customer.family_size,
+            customer_account.number_of_open_accounts,
+            customer_account.number_of_closed_accounts,
+            customer_account.number_of_inactive_accounts,
+            customer_account.number_of_inquiries,
+            customer_consumer_index.customer_lifetime_value,
+            customer_consumer_index.customer_value_segment,
+            customer_credit.credit_history,
+            customer_credit.highest_credit_card_limit,
+            customer_credit.credit_card_utilization_rate,
+            customer_credit.delinquency_status,
+            customer_credit.number_of_collections,
+            customer_credit.max_cc_spent_amount,
+            customer_credit.max_cc_spent_amount_prev,
+            customer_financial.income,
+            customer_spending.most_spending_type,
+            customer_spending.second_most_spending_type,
+            customer_spending.third_most_spending_type,
+            customer_churn.churn_rate_of_cc1
+        FROM customer
+        LEFT JOIN customer_account ON customer.customer_id = customer_account.customer_id
+        LEFT JOIN customer_consumer_index ON customer.customer_id = customer_consumer_index.customer_id
+        LEFT JOIN customer_credit ON customer.customer_id = customer_credit.customer_id
+        LEFT JOIN customer_financial ON customer.customer_id = customer_financial.customer_id
+        LEFT JOIN customer_spending ON customer.customer_id = customer_spending.customer_id
+        LEFT JOIN customer_churn ON customer.customer_id = customer_churn.customer_id
+    """

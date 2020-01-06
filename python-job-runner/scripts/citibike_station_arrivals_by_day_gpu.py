@@ -56,7 +56,7 @@ def main(argv):
     writeOutput("scriptName", "Citibike Station Arrivals By Day")
     writeOutput("processor", "GPU")
     writeOutput("step", "Connecting to Oracle DB")
-    db = cx_Oracle.connect(user="ADMIN", password="Oracle12345!", dsn="burlmigration_high")
+    db = cx_Oracle.connect(user="justin", password="Password1234!", dsn="burmigradw_high")
     print("Connected to Oracle ADW")
 
     startTime = time.time()
