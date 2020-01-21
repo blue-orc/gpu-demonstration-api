@@ -158,11 +158,11 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
 
+inputs, labels = torch.from_numpy(trainset.data).to(device), torch.from_numpy(trainset.targets).to(device)
 for epoch in range(100):  # loop over the dataset multiple times
 
     running_loss = 0.0
     # get the inputs; data is a list of [inputs, labels]
-    inputs, labels = trainset.data.to(device), trainset.targets.to(device)
 
     # zero the parameter gradients
     optimizer.zero_grad()
