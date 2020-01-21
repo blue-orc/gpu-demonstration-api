@@ -134,7 +134,7 @@ class Net(nn.Module):
         x = self.fc3(x)
         return x
 
-
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 net = Net()
 net = net.to(device)
 
@@ -156,7 +156,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 # We simply have to loop over our data iterator, and feed the inputs to the
 # network and optimize.
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 for epoch in range(2):  # loop over the dataset multiple times
 
