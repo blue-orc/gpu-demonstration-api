@@ -58,6 +58,7 @@ Using ``torchvision``, it’s extremely easy to load CIFAR10.
 import torch
 import torchvision
 import torchvision.transforms as transforms
+import numpy as np
 
 ########################################################################
 # The output of torchvision datasets are PILImage images of range [0, 1].
@@ -74,9 +75,10 @@ trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                         download=True, transform=transform)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=10000,
                                           shuffle=True, num_workers=2)
-
+trainset.data = np.reshape(trainset.data, (50000, 3, 32, 32))
 testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
+testset.data = np.reshape(testset.data, (10000, 3, 32, 32))
 testloader = torch.utils.data.DataLoader(testset, batch_size=4,
                                          shuffle=False, num_workers=2)
 
@@ -86,7 +88,7 @@ classes = ('plane', 'car', 'bird', 'cat',
 ########################################################################
 # Let us show some of the training images, for fun.
 
-import numpy as np
+
 
 # functions to show an image
 
@@ -137,6 +139,7 @@ class Net(nn.Module):
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 net = Net()
 net = net.to(device)
+net.train()
 
 ########################################################################
 # 3. Define a Loss function and optimizer
@@ -158,7 +161,8 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
 
-inputs, labels = torch.IntTensor(trainset.data).to(device), torch.IntTensor(trainset.targets).to(device)
+inputs = torch.IntTensor(trainset.data).to(device)
+labels = torch.IntTensor(trainset.targets).to(device)
 for epoch in range(100):  # loop over the dataset multiple times
 
     running_loss = 0.0
@@ -240,6 +244,7 @@ print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
 
 correct = 0
 total = 0
+net.eval()
 with torch.no_grad():
     for data in testloader:
         images, labels = data
