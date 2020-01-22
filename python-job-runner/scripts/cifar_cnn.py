@@ -218,24 +218,6 @@ net = Net()
 net.load_state_dict(torch.load(PATH))
 
 ########################################################################
-# Okay, now let us see what the neural network thinks these examples above are:
-
-images = torch.from_numpy(testset.data).float()
-outputs = net(images)
-
-labels = torch.IntTensor(testset.targets).long()
-
-########################################################################
-# The outputs are energies for the 10 classes.
-# The higher the energy for a class, the more the network
-# thinks that the image is of the particular class.
-# So, let's get the index of the highest energy:
-_, predicted = torch.max(outputs, 1)
-
-print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
-                              for j in range(4)))
-
-########################################################################
 # The results seem pretty good.
 #
 # Let us look at how the network performs on the whole dataset.
