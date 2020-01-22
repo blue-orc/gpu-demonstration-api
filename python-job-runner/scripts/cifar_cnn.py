@@ -214,9 +214,6 @@ print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
 # Next, let's load back in our saved model (note: saving and re-loading the model
 # wasn't necessary here, we only did it to illustrate how to do so):
 
-net = Net()
-net.load_state_dict(torch.load(PATH))
-
 ########################################################################
 # The results seem pretty good.
 #
@@ -225,7 +222,7 @@ net.load_state_dict(torch.load(PATH))
 correct = 0
 total = 0
 for data in testloader:
-    images, labels = data[0], data[1]
+    images, labels = data[0].to(device), data[1].to(device)
 with torch.no_grad():
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
