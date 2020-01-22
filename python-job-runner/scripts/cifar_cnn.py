@@ -73,9 +73,10 @@ transform = transforms.Compose(
 
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                         download=True, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=10000,
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=50000,
                                           shuffle=True, num_workers=2)
-trainset.data = np.reshape(trainset.data, (50000, 3, 32, 32))
+
+#trainset.data = np.reshape(trainset.data, (50000, 3, 32, 32))
 testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
 testset.data = np.reshape(testset.data, (10000, 3, 32, 32))
@@ -156,6 +157,11 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 inputs = torch.from_numpy(trainset.data).float().to(device)
 labels = torch.IntTensor(trainset.targets).long().to(device)
+
+trainloader
+for i, data in enumerate(trainloader, 0):
+    # get the inputs; data is a list of [inputs, labels]
+    inputs, labels = data[0].to(device), data[1].to(device)
 for epoch in range(100):  # loop over the dataset multiple times
 
     running_loss = 0.0
