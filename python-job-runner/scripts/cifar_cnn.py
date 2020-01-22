@@ -201,11 +201,7 @@ torch.save(net.state_dict(), PATH)
 #
 # Okay, first step. Let us display an image from the test set to get familiar.
 
-dataiter = iter(testloader)
-images, labels = dataiter.next()
 
-# print images
-imshow(torchvision.utils.make_grid(images))
 print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
 
 ########################################################################
@@ -213,11 +209,12 @@ print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
 # wasn't necessary here, we only did it to illustrate how to do so):
 
 net = Net()
-net.load_state_dict(torch.load(PATH))
+net.load_state_dict(torch.load(PATH)).to(device)
 
 ########################################################################
 # Okay, now let us see what the neural network thinks these examples above are:
 
+images = torch.from_numpy(testset.data).float().to(device)
 outputs = net(images)
 
 ########################################################################
