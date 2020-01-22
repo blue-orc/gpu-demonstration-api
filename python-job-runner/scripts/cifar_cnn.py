@@ -209,12 +209,12 @@ print('GroundTruth: ', ' '.join('%5s' % classes[labels[j]] for j in range(4)))
 # wasn't necessary here, we only did it to illustrate how to do so):
 
 net = Net()
-net.load_state_dict(torch.load(PATH)).to(device)
+net.load_state_dict(torch.load(PATH))
 
 ########################################################################
 # Okay, now let us see what the neural network thinks these examples above are:
 
-images = torch.from_numpy(testset.data).float().to(device)
+images = torch.from_numpy(testset.data).float()
 outputs = net(images)
 
 ########################################################################
