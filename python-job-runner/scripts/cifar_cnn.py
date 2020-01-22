@@ -225,7 +225,7 @@ net.load_state_dict(torch.load(PATH))
 correct = 0
 total = 0
 for data in testloader:
-    images, labels = data[0].to(device), data[1].to(device)
+    images, labels = data[0], data[1]
 with torch.no_grad():
         outputs = net(images)
         _, predicted = torch.max(outputs.data, 1)
