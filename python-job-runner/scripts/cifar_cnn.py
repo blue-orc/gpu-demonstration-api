@@ -79,8 +79,8 @@ trainloader = torch.utils.data.DataLoader(trainset, batch_size=50000,
 #trainset.data = np.reshape(trainset.data, (50000, 3, 32, 32))
 testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
-testset.data = np.reshape(testset.data, (10000, 3, 32, 32))
-testloader = torch.utils.data.DataLoader(testset, batch_size=4,
+#testset.data = np.reshape(testset.data, (10000, 3, 32, 32))
+testloader = torch.utils.data.DataLoader(testset, batch_size=10000,
                                          shuffle=False, num_workers=2)
 
 classes = ('plane', 'car', 'bird', 'cat',
@@ -242,12 +242,16 @@ print('Predicted: ', ' '.join('%5s' % classes[predicted[j]]
 
 correct = 0
 total = 0
-net.eval()
+for data in testloader:
+    images, labels = data[0].to(device), data[1].to(device)
 with torch.no_grad():
-    outputs = net(images)
-    _, predicted = torch.max(outputs.data, 1)
-    total += labels.size(0)
-    correct += (predicted == labels).sum().item()
+        outputs = net(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+print('Accuracy of the network on the 10000 test images: %d %%' % (
+    100 * correct / total))
 
 print('Accuracy of the network on the 10000 test images: %d %%' % (
     100 * correct / total))
@@ -262,14 +266,16 @@ print('Accuracy of the network on the 10000 test images: %d %%' % (
 
 class_correct = list(0. for i in range(10))
 class_total = list(0. for i in range(10))
+for data in testloader:
+    images, labels = data[0].to(device), data[1].to(device)
 with torch.no_grad():
-    outputs = net(images)
-    _, predicted = torch.max(outputs, 1)
-    c = (predicted == labels).squeeze()
-    for i in range(4):
-        label = labels[i]
-        class_correct[label] += c[i].item()
-        class_total[label] += 1
+        outputs = net(images)
+        _, predicted = torch.max(outputs, 1)
+        c = (predicted == labels).squeeze()
+        for i in range(4):
+            label = labels[i]
+            class_correct[label] += c[i].item()
+            class_total[label] += 1
 
 
 for i in range(10):
