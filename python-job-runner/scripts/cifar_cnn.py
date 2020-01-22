@@ -154,7 +154,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 
 
-inputs = torch.from_numpy(trainset.data).to(device)
+inputs = torch.from_numpy(trainset.data).float().to(device)
 labels = torch.IntTensor(trainset.targets).to(device)
 for epoch in range(100):  # loop over the dataset multiple times
 
