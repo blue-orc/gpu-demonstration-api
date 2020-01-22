@@ -163,7 +163,7 @@ for i, data in enumerate(trainloader, 0):
     inputs, labels = data[0].to(device), data[1].to(device)
 
 running_loss = 0.0
-for epoch in range(100):  # loop over the dataset multiple times
+for epoch in range(1000):  # loop over the dataset multiple times
 
     # get the inputs; data is a list of [inputs, labels]
 
@@ -228,9 +228,6 @@ with torch.no_grad():
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
-
-print('Accuracy of the network on the 10000 test images: %d %%' % (
-    100 * correct / total))
 
 print('Accuracy of the network on the 10000 test images: %d %%' % (
     100 * correct / total))
